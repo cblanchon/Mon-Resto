@@ -1,10 +1,17 @@
-name: Deployment
+name: deploy
 on: [push]
 jobs:
-  deploy:
-    runs-on: ubuntu-20.04
-    steps:
-    - uses: actions/checkout@v2 # Récupère le contenu du dépôt correspondant au commit du workflow en cours
-    - run: sudo apt-get update && sudo apt-get install -y make && sudo apt-get install -y asciidoctor
-    - run: make all && export NETLIFY_AUTH_TOKEN=_Tj2QCdE5_vWW3PXb02hAF2zKXdGd8_dgofP3SvnhmM && NETLIFY_SITE_ID=4a587bb6-e3f6-4fdd-8b55-ed296c2c8df4
-    - run: netlify deploy --prod --dir=./dist/
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:   
+    - uses: actions/checkout@master
+    - run: sudo apt update && sudo apt install asciidoctor
+    - run: make all
+    - name: the_deployment
+      uses: netlify/actions/cli@master
+      with:
+        args: deploy --prod --dir=./dist/
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
