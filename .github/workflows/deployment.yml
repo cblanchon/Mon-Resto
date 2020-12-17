@@ -1,7 +1,7 @@
 name: Deployment
 on: [push]
 jobs:
-  deploy website:
+  deploy:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2 # Récupère le contenu du dépôt correspondant au commit du workflow en cours
